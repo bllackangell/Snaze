@@ -4,7 +4,7 @@ This project is a simulation of the classic snake game.
 
 # Include
 
-Where the *.h and *.inl are located.
+Where the Level.h, Player.h, Snake.h, SnakeGame.h and it's respectives inl files are located.
 
 # Src
 
