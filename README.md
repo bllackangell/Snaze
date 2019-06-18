@@ -1,0 +1,2 @@
+# Snaze
+Classic snake game
