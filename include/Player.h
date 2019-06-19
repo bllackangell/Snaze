@@ -1,3 +1,7 @@
+#ifndef PLAYER_H
+#define PLAYER_H
+
+#include "SnakeGame.h"
 class Player
 {
 private:
@@ -5,10 +9,12 @@ private:
 //TODO
 
 public:
-	Player();
-	~Player();
+	Player() = default;
+	~Player() = default;
 
 	bool find_solution();
 
-	Direction next_move();
+//	Direction next_move(); //TODO DIRECTION COULD BE AN STACK(?) THA ALLOWS REMOVING FROM BOTH END AND BEGIN
 };
+
+#endif //PLAYER_H

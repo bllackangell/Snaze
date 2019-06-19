@@ -1,5 +1,14 @@
+#ifndef SNAKEGAME_H
+#define SNAKEGAME_H
+
 #include<iostream>
 #include<string>
+#include<vector>
+#include <fstream>
+#include <sstream>
+#include "Snake.h"
+#include "Player.h"
+#include "Level.h"
 
 class SnakeGame
 {
@@ -7,11 +16,12 @@ private:
 
 	int levels;
 	int height, width;
+	std::string head = ">";
 	std::string score;
 	std::string input;
-	Level current_level();
-	Player IA();
-	Snake cobra('>');
+	Level current_level;
+	//Player IA; TODO
+	Snake cobra;
 
 public:
 //=== CONSTRUCTORS ===\\
@@ -34,22 +44,24 @@ public:
 
 
 
-	render_welcome_msg();
+	void render_welcome_msg();
 
 
-	initialize_game(const int argc, const char **argv);
+	void initialize_game(int argc, char **argv); //TODO
 
 
-	update();
+	void update(); //TODO
 
 
-	process_events();
+	void process_events(); //TODO
 
 
-	render();
+	void render();
 
 
-	game_over();
+	bool game_over();
 };
 
 #include "SnakeGame.inl"
+
+#endif //SNAKEGAME_H

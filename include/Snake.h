@@ -1,3 +1,8 @@
+#ifndef SNAKE_H
+#define SNAKE_H
+
+#include "SnakeGame.h"
+
 class Snake
 {
 private:
@@ -5,18 +10,18 @@ private:
 
 	int apples_eaten;
 
-	friend SnakeGame;
-
 public:
-	Snake(char head)
-	{
-		snake = head;
+	Snake();
 
-		apples_eaten = 0;
-	}
+	int eaten();
 
-	~Snake()
-	{
-		/* EMPTY */
-	}
+	void operator++();
+
+	void clear();
+
+	~Snake() = default;
 };
+
+#include "Snake.inl"
+
+#endif //SNAKE_H

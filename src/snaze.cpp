@@ -1,10 +1,10 @@
-#include "../include/SnakeGame.h"
+#include "SnakeGame.h"
 
 int main( int argc, char **argv )
 {
-	SnakeGame state
+	SnakeGame state;
 
-	state.initialize_game(const int argc, const char **argv);
+	state.initialize_game(argc, argv);
 
 	state.render_welcome_msg();
 
@@ -15,5 +15,5 @@ int main( int argc, char **argv )
 		state.render();
 	}
 
-	return EXIT_SUCESS;
+	return 0;
 }
