@@ -12,19 +12,13 @@ Block::Block(char other)
 }
 
 
-Level::Level(std::string file)
-{
-	//TODO
-}
-
-
 void Level::init(const int H, const int W)
 {
-    level.resize(W);
+    level.resize(H);
 
-    for (int i = 0; i < W; i++)
+    for (int i = 0; i < H; i++)
     {
-        level[i].resize(H);
+        level[i].resize(W);
     }
 }
 
@@ -39,4 +33,26 @@ void Level::set( char c , int H, int W)
 {
     level[H][W].block = c;
     level[H][W].occupied = true;
+
+    if(c == '*')
+    {
+        snake_pos[0] = H;
+        snake_pos[1] = W;
+    }
+
+}
+
+
+void Level::set_empty( char c , int H, int W)
+{
+    level[H][W].block = c;
+    level[H][W].occupied = false;
+
+
+}
+
+
+int *Level::pos()
+{
+    return snake_pos;
 }

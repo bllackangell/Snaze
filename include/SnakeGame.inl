@@ -17,13 +17,16 @@ SnakeGame::SnakeGame()
 
 void SnakeGame::render_welcome_msg()
 {
-	std::cout << "---> Welcome to the classic Snake Game <---\n";
-	std::cout << "-------------------------------------------\n";
-	std::cout << "Levels loaded: " << levels << " | Snake lives: 5 | Apples to eat: 10\n";
-	std::cout << "Clear all levels to win the game. Good luck!!!\n";
-	std::cout << "-------------------------------------------\n";
-	std::cout << "Press <ENTER> to start the game!\n";
-	std::getline(std::cin, input);
+    if(!game_over())
+    {
+        std::cout << "---> Welcome to the classic Snake Game <---\n";
+        std::cout << "-------------------------------------------\n";
+        std::cout << "Levels loaded: " << levels << " | Snake lives: 5 | Apples to eat: 10\n";
+        std::cout << "Clear all levels to win the game. Good luck!!!\n";
+        std::cout << "-------------------------------------------\n";
+        std::cout << "Press <ENTER> to start the game!\n";
+        std::getline(std::cin, input);
+    }
 }
 
 
@@ -32,6 +35,8 @@ void SnakeGame::initialize_game(int argc, char** argv) //TODO THIS METHOD WAS CO
 	std::string line;
 	std::ifstream dat;
 	dat.open(*(argv + 1), std::ifstream::in);
+
+	std::cout << *(argv + 1) << "\n";
 
 	if (!dat.is_open())
 	{
@@ -53,10 +58,12 @@ void SnakeGame::initialize_game(int argc, char** argv) //TODO THIS METHOD WAS CO
 			if (cont == 0)
 			{
 				height = found;
+				std::cout << height << "\n";
 			}
 			if (cont == 1)
 			{
 				width = found;
+                std::cout << width << "\n";
 			}
 		}
 		temp = "";
@@ -65,11 +72,10 @@ void SnakeGame::initialize_game(int argc, char** argv) //TODO THIS METHOD WAS CO
 
 	current_level.init(height, width);
 
+    bool headfound = false;
 
 	for (auto l = 0; l < height; l++)
 	{
-		bool headfound = false;
-
 		std::getline(dat, line);
 
 		for (auto c = 0; c < line.size(); c++)
@@ -81,20 +87,34 @@ void SnakeGame::initialize_game(int argc, char** argv) //TODO THIS METHOD WAS CO
 			else if (line.at(c) == '#')
 			{
 				current_level.set('#', l, c);
+				std::cout << line.at(c);
 			}
 			else if (line.at(c) == '.')
 			{
                 current_level.set('.', l, c);
+                std::cout << line.at(c);
 			}
 			else if (line.at(c) == '*')
 			{
                 current_level.set('*', l, c);
                 headfound = true;
+                std::cout << line.at(c);
 			}
-
-			//TODO STOP IF FOUND IS FALSE
+			else
+            {
+			    current_level.set_empty(' ', l, c);
+                std::cout << line.at(c);
+            }
 		}
+        std::cout << l <<"\n";
 	}
+
+	if( !headfound )
+    {
+        over = true;
+
+        std::cout << "Head not found in maze.";
+    }
 
 	dat.close();
 }
@@ -102,12 +122,14 @@ void SnakeGame::initialize_game(int argc, char** argv) //TODO THIS METHOD WAS CO
 
 void SnakeGame::update()
 {
+    std::cout << "YO\n";
 	//TODO ADD ACTIONS OF PLAYER IA
 }
 
 
 void SnakeGame::process_events()
 {
+    std::cout << "YO\n";
     //TODO
 }
 
@@ -119,5 +141,8 @@ void SnakeGame::render()
 
 bool SnakeGame::game_over()
 {
-	return cobra.eaten() == 5;
+    if(cobra.eaten() == 5)
+        over = true;
+
+	return over;
 }

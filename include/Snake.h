@@ -6,7 +6,7 @@
 class Snake
 {
 private:
-	std::string snake;
+	std::string snake = ">";
 
 	int apples_eaten;
 

@@ -19,6 +19,7 @@ class Level
 private:
 
 	std::vector<std::vector<Block>> level;
+	int snake_pos[2];
 
 public:
 	//=== CONSTRUCTORS ===\\
@@ -26,9 +27,6 @@ public:
 
 
 	Level() = default;
-
-
-	Level(std::string file); //TODO
 
 
 
@@ -52,6 +50,9 @@ public:
 	void set( char c , int H, int W);
 
 
+	void set_empty( char c , int H, int W);
+
+
     friend std::ostream& operator<<(std::ostream& os, Level lvl)
     {
         for (int i = 0; i < lvl.level.size(); ++i)
@@ -64,6 +65,9 @@ public:
 
         return os;
     }
+
+
+    int *pos();
 };
 
 #include"Level.inl"

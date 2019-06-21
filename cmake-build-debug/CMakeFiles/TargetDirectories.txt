@@ -1,0 +1,3 @@
+C:/Users/Victor/source/repos/Snaze-master/cmake-build-debug/CMakeFiles/Snaze.dir
+C:/Users/Victor/source/repos/Snaze-master/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Victor/source/repos/Snaze-master/cmake-build-debug/CMakeFiles/rebuild_cache.dir

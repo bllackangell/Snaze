@@ -16,10 +16,10 @@ private:
 
 	int levels;
 	int height, width;
-	std::string head = ">";
 	std::string score;
 	std::string input;
-	Level current_level;
+	Level current_level; //TODO CHANGE TO VECTOR LEVEL
+	bool over = false;
 	//Player IA; TODO
 	Snake cobra;
 
