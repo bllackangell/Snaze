@@ -53,16 +53,15 @@ public:
 	void set_empty( char c , int H, int W);
 
 
-    friend std::ostream& operator<<(std::ostream& os, Level lvl)
+    friend std::ostream& operator<<(std::ostream& os, std::vector<Level> lvl)
     {
-        for (int i = 0; i < lvl.level.size(); ++i)
-        {
-            for (int j = 0; j < lvl.level[i].size(); ++j)
-            {
-                os << lvl.level[i][j].block;
+        for (int k = 0; k < lvl.size(); ++k) {
+            for (int i = 0; i < lvl[k].level.size(); ++i) {
+                for (int j = 0; j < lvl[k].level[i].size(); ++j) {
+                    os << lvl[k].level[i][j].block;
+                }
             }
         }
-
         return os;
     }
 

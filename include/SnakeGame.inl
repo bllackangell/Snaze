@@ -2,7 +2,7 @@
 
 
 
-SnakeGame::SnakeGame()
+SnakeGame::SnakeGame() //TODO REDO
 {
 	levels = 0;
 	height = 0;
@@ -15,7 +15,7 @@ SnakeGame::SnakeGame()
 
 
 
-void SnakeGame::render_welcome_msg()
+void SnakeGame::render_welcome_msg() //DONE!!!
 {
     if(!game_over())
     {
@@ -30,7 +30,7 @@ void SnakeGame::render_welcome_msg()
 }
 
 
-void SnakeGame::initialize_game(int argc, char** argv) //TODO THIS METHOD WAS COPIED FROM LIFE GAME, NEEDS CHANGES ON CODE TO WORK
+void SnakeGame::initialize_game(int argc, char** argv) //DONE!!!
 {
 	std::string line;
 	std::ifstream dat;
@@ -42,80 +42,75 @@ void SnakeGame::initialize_game(int argc, char** argv) //TODO THIS METHOD WAS CO
 	{
 		std::cout << "Unable to open file.\n";
 	}
-	std::getline(dat, line);
-	std::stringstream ss;
 
-	ss << line;
-
-	std::string temp;
-	int found;
-	for (int cont = 0; !ss.eof(); cont++)
-	{
-		ss >> temp;
-
-		if (std::stringstream(temp) >> found)
-		{
-			if (cont == 0)
-			{
-				height = found;
-				std::cout << height << "\n";
-			}
-			if (cont == 1)
-			{
-				width = found;
-                std::cout << width << "\n";
-			}
-		}
-		temp = "";
-	}
-
-
-	current_level.init(height, width);
-
-    bool headfound = false;
-
-	for (auto l = 0; l < height; l++)
-	{
-		std::getline(dat, line);
-
-		for (auto c = 0; c < line.size(); c++)
-		{
-			if (c == width)
-			{
-				break;
-			}
-			else if (line.at(c) == '#')
-			{
-				current_level.set('#', l, c);
-				std::cout << line.at(c);
-			}
-			else if (line.at(c) == '.')
-			{
-                current_level.set('.', l, c);
-                std::cout << line.at(c);
-			}
-			else if (line.at(c) == '*')
-			{
-                current_level.set('*', l, c);
-                headfound = true;
-                std::cout << line.at(c);
-			}
-			else
-            {
-			    current_level.set_empty(' ', l, c);
-                std::cout << line.at(c);
-            }
-		}
-        std::cout << l <<"\n";
-	}
-
-	if( !headfound )
+    while (!dat.eof())
     {
-        over = true;
+        int i = -1;
 
-        std::cout << "Head not found in maze.";
+        std::getline(dat, line);
+        std::stringstream ss;
+
+        if(line[1] >= 48 and line[1] <= 57)
+        {
+            ss << line;
+
+            std::string temp;
+            int found;
+            for (int cont = 0; !ss.eof(); cont++) {
+                ss >> temp;
+
+                if (std::stringstream(temp) >> found) {
+                    i++;
+
+                    current_level.resize(i + 1);
+
+                    if (cont == 0) {
+                        height = found;
+                        std::cout << height << " ";
+                    }
+                    if (cont == 1) {
+                        width = found;
+                        std::cout << width << "\n";
+                    }
+                }
+                temp = "";
+            }
+
+            current_level[i].init(height, width);
+
+            bool headfound = false;
+
+            for (auto l = 0; l < height; l++) {
+                std::getline(dat, line);
+
+                for (auto c = 0; c < line.size(); c++) {
+                    if (c == width) {
+                        break;
+                    } else if (line.at(c) == '#') {
+                        current_level[i].set('#', l, c);
+                        std::cout << line.at(c);
+                    } else if (line.at(c) == '.') {
+                        current_level[i].set('.', l, c);
+                        std::cout << line.at(c);
+                    } else if (line.at(c) == '*') {
+                        current_level[i].set('*', l, c);
+                        headfound = true;
+                        std::cout << line.at(c);
+                    } else {
+                        current_level[i].set_empty(' ', l, c);
+                        std::cout << line.at(c);
+                    }
+                }
+                std::cout << l << "\n";
+            }
+
+            if (!headfound) {
+                over = true;
+
+                std::cout << "Head not found in maze: " << i;
+            }
+        }
     }
-
 	dat.close();
 }
 

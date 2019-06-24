@@ -7,13 +7,13 @@ int main( int argc, char **argv )
 	state.initialize_game(argc, argv);
 
 	state.render_welcome_msg();
-
+/*
 	while(!state.game_over())
 	{
 		state.process_events();
 		state.update();
 		state.render();
 	}
-
+*/
 	return 0;
 }
