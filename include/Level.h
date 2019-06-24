@@ -18,7 +18,7 @@ class Level
 {
 private:
 
-	std::vector<std::vector<Block>> level;
+	std::vector<std::vector<Block>> level; //!< Matrix of levels
 	int snake_pos[2];
 
 public:
@@ -53,6 +53,7 @@ public:
 	void set_empty( char c , int H, int W);
 
 
+	//!< Prints levels
     friend std::ostream& operator<<(std::ostream& os, std::vector<Level> lvl)
     {
         for (int k = 0; k < lvl.size(); ++k) {

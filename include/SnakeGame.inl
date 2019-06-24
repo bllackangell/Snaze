@@ -4,7 +4,6 @@
 
 SnakeGame::SnakeGame() //TODO REDO
 {
-	levels = 0;
 	height = 0;
 	width = 0;
 }
@@ -21,7 +20,7 @@ void SnakeGame::render_welcome_msg() //DONE!!!
     {
         std::cout << "---> Welcome to the classic Snake Game <---\n";
         std::cout << "-------------------------------------------\n";
-        std::cout << "Levels loaded: " << levels << " | Snake lives: 5 | Apples to eat: 10\n";
+        std::cout << "Levels loaded: " << current_level.size() << " | Snake lives: 5 | Apples to eat: 10\n";
         std::cout << "Clear all levels to win the game. Good luck!!!\n";
         std::cout << "-------------------------------------------\n";
         std::cout << "Press <ENTER> to start the game!\n";
@@ -30,7 +29,7 @@ void SnakeGame::render_welcome_msg() //DONE!!!
 }
 
 
-void SnakeGame::initialize_game(int argc, char** argv) //DONE!!!
+void SnakeGame::initialize_game(int argc, char** argv)
 {
 	std::string line;
 	std::ifstream dat;

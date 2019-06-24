@@ -14,11 +14,10 @@ class SnakeGame
 {
 private:
 
-	int levels;
-	int height, width;
-	std::string score;
-	std::string input;
-	std::vector<Level> current_level;
+	int height, width; //!< Height and width of the map
+	std::string score; //!< Score
+	std::string input; //!< User input to continue the game
+	std::vector<Level> current_level; //!< Array of levels
 	bool over = false;
 	//Player IA; TODO
 	Snake cobra;
@@ -44,10 +43,12 @@ public:
 
 
 
+    //!< Render Welcome message
 	void render_welcome_msg();
 
 
-	void initialize_game(int argc, char **argv); //TODO
+	//!< Initialize the game
+	void initialize_game(int argc, char **argv);
 
 
 	void update(); //TODO
@@ -59,6 +60,7 @@ public:
 	void render();
 
 
+	//!< Returns if game is over or not
 	bool game_over();
 };
 
