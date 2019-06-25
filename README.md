@@ -12,7 +12,7 @@ Where the snaze.cpp(the game) file is located.
 
 # Limitations
 
-* This program is still in it's early stage. Doesn't even have the player class made.
+* This program is still in it's early stage. Doesn't even have the player class made, and the snaze is not functional
 
 # Build
 
