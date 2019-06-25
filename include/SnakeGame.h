@@ -5,6 +5,7 @@
 #include<string>
 #include<vector>
 #include <fstream>
+#include <locale.h>
 #include <sstream>
 #include "Snake.h"
 #include "Player.h"
@@ -14,10 +15,11 @@ class SnakeGame
 {
 private:
 
-	int height, width; //!< Height and width of the map
-	std::string score; //!< Score
-	std::string input; //!< User input to continue the game
-	std::vector<Level> current_level; //!< Array of levels
+	int height, width;          //!< Height and width of the map
+	std::string score;          //!< Score
+	std::string input;          //!< User input to continue the game
+	std::vector<Level> levels;  //!< Array of levels
+	int current_level;          //!< Current level on levels array
 	bool over = false;
 	//Player IA; TODO
 	Snake cobra;

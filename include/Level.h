@@ -5,28 +5,30 @@
 
 struct Block
 {
-	char block;
+	const char *block;
 
 	bool occupied;
 
 	Block();
 
-	Block(char other);
+	explicit Block(const char *other);
 };
 
 class Level
 {
-private:
+public:
 
 	std::vector<std::vector<Block>> level; //!< Matrix of levels
+	int h, w;
 	int snake_pos[2];
+	const char *apple;
 
 public:
 	//=== CONSTRUCTORS ===\\
 
 
 
-	Level() = default;
+	Level();
 
 
 
@@ -42,32 +44,42 @@ public:
 
 
 
-	void init(const int H, const int W);
+	void init(int H, int W);
 
 	std::vector<std::vector<Block>> Maze();
 
 
-	void set( char c , int H, int W);
+	void set( const char *c , int H, int W);
 
 
-	void set_empty( char c , int H, int W);
-
-
-	//!< Prints levels
-    friend std::ostream& operator<<(std::ostream& os, std::vector<Level> lvl)
-    {
-        for (int k = 0; k < lvl.size(); ++k) {
-            for (int i = 0; i < lvl[k].level.size(); ++i) {
-                for (int j = 0; j < lvl[k].level[i].size(); ++j) {
-                    os << lvl[k].level[i][j].block;
-                }
-            }
-        }
-        return os;
-    }
+	void set_empty( const char *c , int H, int W);
 
 
     int *pos();
+
+
+    char element(int H, int W);
+
+
+    int height();
+
+
+    int width();
+
+
+    //!< Prints levels
+    friend std::ostream& operator<<(std::ostream& os, Level lvl )
+    {
+        for (int i = 0; i < lvl.height(); ++i) {
+            for (int j = 0; j < lvl.width(); ++j)
+            {
+                os << lvl.element(i, j);
+            }
+            os << std::endl;
+        }
+
+        return os;
+    }
 };
 
 #include"Level.inl"

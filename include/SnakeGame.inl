@@ -4,6 +4,7 @@
 
 SnakeGame::SnakeGame() //TODO REDO
 {
+    current_level = 0;
 	height = 0;
 	width = 0;
 }
@@ -14,13 +15,13 @@ SnakeGame::SnakeGame() //TODO REDO
 
 
 
-void SnakeGame::render_welcome_msg() //DONE!!!
+void SnakeGame::render_welcome_msg()
 {
     if(!game_over())
     {
-        std::cout << "---> Welcome to the classic Snake Game <---\n";
+        std::cout << "\n\n\n\n\n---> Welcome to the classic Snake Game <---\n";
         std::cout << "-------------------------------------------\n";
-        std::cout << "Levels loaded: " << current_level.size() << " | Snake lives: 5 | Apples to eat: 10\n";
+        std::cout << "Levels loaded: " << levels.size() << " | Snake lives: 5 | Apples to eat: 10\n";
         std::cout << "Clear all levels to win the game. Good luck!!!\n";
         std::cout << "-------------------------------------------\n";
         std::cout << "Press <ENTER> to start the game!\n";
@@ -42,40 +43,39 @@ void SnakeGame::initialize_game(int argc, char** argv)
 		std::cout << "Unable to open file.\n";
 	}
 
+    int i = 0;
+
     while (!dat.eof())
     {
-        int i = -1;
-
         std::getline(dat, line);
         std::stringstream ss;
 
         if(line[1] >= 48 and line[1] <= 57)
         {
+            i++;
             ss << line;
 
             std::string temp;
             int found;
-            for (int cont = 0; !ss.eof(); cont++) {
+            for (int cont = 0; cont < 2; cont++)
+            {
                 ss >> temp;
 
                 if (std::stringstream(temp) >> found) {
-                    i++;
 
-                    current_level.resize(i + 1);
+                    levels.resize(i);
 
                     if (cont == 0) {
                         height = found;
-                        std::cout << height << " ";
                     }
                     if (cont == 1) {
                         width = found;
-                        std::cout << width << "\n";
                     }
                 }
                 temp = "";
             }
 
-            current_level[i].init(height, width);
+            levels[i - 1].init(height, width);
 
             bool headfound = false;
 
@@ -86,21 +86,20 @@ void SnakeGame::initialize_game(int argc, char** argv)
                     if (c == width) {
                         break;
                     } else if (line.at(c) == '#') {
-                        current_level[i].set('#', l, c);
-                        std::cout << line.at(c);
+                        levels[i - 1].set(u8"\u29DB", l, c);
                     } else if (line.at(c) == '.') {
-                        current_level[i].set('.', l, c);
-                        std::cout << line.at(c);
+                        levels[i - 1].set(u8"\u0020", l, c);
                     } else if (line.at(c) == '*') {
-                        current_level[i].set('*', l, c);
+                        levels[i - 1].set(u8"\u1F40D", l, c);
                         headfound = true;
-                        std::cout << line.at(c);
                     } else {
-                        current_level[i].set_empty(' ', l, c);
-                        std::cout << line.at(c);
+                        if(l == 1 and c == 1)
+                        {
+                            levels[i - 1].set(u8"\u1F34E", l, c);
+                        }
+                        levels[i - 1].set_empty(u8"\u0020", l, c);
                     }
                 }
-                std::cout << l << "\n";
             }
 
             if (!headfound) {
@@ -116,21 +115,26 @@ void SnakeGame::initialize_game(int argc, char** argv)
 
 void SnakeGame::update()
 {
-    std::cout << "YO\n";
+
+    std::cout << "===UPDATE===\n";
 	//TODO ADD ACTIONS OF PLAYER IA
 }
 
 
 void SnakeGame::process_events()
 {
-    std::cout << "YO\n";
+    std::cout << "===PROCES SEVENTS===\n";
     //TODO
 }
 
 
 void SnakeGame::render()
 {
-	std::cout << current_level;
+	std::cout << current_level << std::endl;
+	std::cout << levels[current_level];
+
+    std::cout << "Press <ENTER> to continue!\n";
+    std::getline(std::cin, input);
 }
 
 bool SnakeGame::game_over()
