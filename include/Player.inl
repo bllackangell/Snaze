@@ -119,8 +119,7 @@ bool Player::move(Level &level, Snake &cobra)
 
 
 
-bool Player::solution(Level &level, Snake &cobra)
-{
+bool Player::solution(Level &level, Snake &cobra) {
     int h = level.pos[0];
     int w = level.pos[1];
 
@@ -139,11 +138,10 @@ bool Player::solution(Level &level, Snake &cobra)
 
     int pos = rand() % 4;
 
-    while( flag )
-    {
+    while (flag) {
         if ((pos == 0 || y < w) and l != true)         /// left
         {
-            if(level.last_pos[1] != w - 1 and !level.level[h][w - 1].occupied) {
+            if (level.last_pos[1] != w - 1 and !level.level[h][w - 1].occupied) {
                 new_h = h;
                 new_w = w - 1;
 
@@ -152,17 +150,15 @@ bool Player::solution(Level &level, Snake &cobra)
                 r = false;
                 u = false;
                 d = false;
-            }
-            else
+            } else
                 l = true;
-            if(r == true and u == true and d == true)
-            {
+            if (r == true and u == true and d == true) {
                 return false;
             }
         }
         if ((pos == 1 || y > w) and r != true)    /// right
         {
-            if(level.last_pos[1] != w + 1 and !level.level[h][w + 1].occupied) {
+            if (level.last_pos[1] != w + 1 and !level.level[h][w + 1].occupied) {
                 new_h = h;
                 new_w = w + 1;
 
@@ -171,17 +167,15 @@ bool Player::solution(Level &level, Snake &cobra)
                 r = false;
                 u = false;
                 d = false;
-            }
-            else
+            } else
                 r = true;
-            if(l == true and u == true and d == true)
-            {
+            if (l == true and u == true and d == true) {
                 return false;
             }
         }
         if ((pos == 2 || x > h) and d != true)    /// down
         {
-            if(level.last_pos[0] != h + 1 and !level.level[h + 1][w].occupied) {
+            if (level.last_pos[0] != h + 1 and !level.level[h + 1][w].occupied) {
                 new_h = h + 1;
                 new_w = w;
 
@@ -190,17 +184,16 @@ bool Player::solution(Level &level, Snake &cobra)
                 r = false;
                 u = false;
                 d = false;
-            }
-            else
+            } else
                 d = true;
-            if(l == true and r == true and u == true)
-            {
+            if (l == true and r == true and u == true) {
                 return false;
             }
         }
         if ((pos == 3 || x < h) and u != true)    /// up
         {
-            if(level.last_pos[0] != h - 1 and !level.level[h - 1][w].occupied) {
+            if (level.last_pos[0] != h - 1 and !level.level[h - 1][w].occupied)
+            {
                 new_h = h - 1;
                 new_w = w;
 
@@ -213,7 +206,7 @@ bool Player::solution(Level &level, Snake &cobra)
             else {
                 u = true;
             }
-            if(l == true and r == true and d == true)
+            if (l == true and r == true and d == true)
             {
                 return false;
             }
@@ -221,32 +214,28 @@ bool Player::solution(Level &level, Snake &cobra)
 
         pos = rand() % 4;
     }
-
-    if(cobra.snake.size() == 1)
+/*
+    for (int i = 0; i < level.body.size() - 1; i++)
     {
         if (level.level[h][w].block != 'A')
+            level.set_empty(' ', level.body[i].x, level.body[i].y);
+
+        level.body[i] = level.body[i + 1];
+        level.set('*', level.body[i].x, level.body[i].y);
+    }
+*/
+    if (level.level[h][w].block != 'A')
         level.set_empty(' ', h, w);
 
-        level.set('*', new_h, new_w);
+    level.set('*', new_h, new_w);
 
-        level.last_pos = level.pos;
+    level.last_pos = level.pos;
 
-        level.pos[0] = new_h;   //TODO make block have coord
-        level.pos[1] = new_w;
+    level.body[level.body.size() - 1].x = new_h;
+    level.body[level.body.size() - 1].y = new_w;
 
-        return true;
-    }
-    else {
-        if (level.level[h][w].block != 'A')
-            level.set_empty(' ', h, w);
+    level.pos[0] = new_h;   //TODO make block have coord
+    level.pos[1] = new_w;
 
-        level.set('*', new_h, new_w);
-
-        level.last_pos = level.pos;
-
-        level.pos[0] = new_h;   //TODO make block have coord
-        level.pos[1] = new_w;
-
-        return true;
-    }
+    return true;
 }

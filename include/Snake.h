@@ -3,11 +3,6 @@
 
 #include "SnakeGame.h"
 
-struct coord{
-    int x, y;
-};
-
-
 class Snake
 {
 public:

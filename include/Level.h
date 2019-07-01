@@ -22,6 +22,18 @@ struct Block
 	explicit Block(char other);
 };
 
+
+struct coord{
+    int x, y;
+
+    coord(int i, int j)
+    {
+        x = i;
+        y = j;
+    }
+
+};
+
 class Level
 {
 public:

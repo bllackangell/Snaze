@@ -27,82 +27,81 @@ void SnakeGame::initialize_game(int argc, char** argv)
 		over = true;
 	}
 
-    int i = 0;
+	else {
 
-    while (!dat.eof())
-    {
-        std::getline(dat, line);
-        std::stringstream ss;
+        int i = 0;
 
-        if(line[1] >= 48 and line[1] <= 57)
-        {
-            i++;
-            ss << line;
+        while (!dat.eof()) {
+            std::getline(dat, line);
+            std::stringstream ss;
 
-            std::string temp;
-            int found;
-            for (int cont = 0; cont < 2; cont++)
-            {
-                ss >> temp;
+            if (line[1] >= 48 and line[1] <= 57) {
+                i++;
+                ss << line;
 
-                if (std::stringstream(temp) >> found) {
+                std::string temp;
+                int found;
+                for (int cont = 0; cont < 2; cont++) {
+                    ss >> temp;
 
-                    levels.resize(i);
-                    buffer.resize(i);
+                    if (std::stringstream(temp) >> found) {
 
-                    if (cont == 0) {
-                        height = found;
+                        levels.resize(i);
+                        buffer.resize(i);
+
+                        if (cont == 0) {
+                            height = found;
+                        }
+                        if (cont == 1) {
+                            width = found;
+                        }
                     }
-                    if (cont == 1) {
-                        width = found;
+                    temp = "";
+                }
+
+                levels[i - 1].init(height, width);
+
+                bool headfound = false;
+
+                for (auto l = 0; l < height; l++) {
+                    std::getline(dat, line);
+
+                    for (auto c = 0; c < line.size(); c++) {
+                        if (c == width) {
+                            break;
+                        } else if (line.at(c) == '#') {
+                            levels[i - 1].set('#', l, c);
+                        } else if (line.at(c) == '.') {
+                            levels[i - 1].set(' ', l, c);
+                        } else if (line.at(c) == '*') {
+                            levels[i - 1].set('*', l, c);
+                            levels[i - 1].pos[0] = l;
+                            levels[i - 1].pos[1] = c;
+                            levels[i - 1].body[0].x = l;
+                            levels[i - 1].body[0].y = c;
+                            headfound = true;
+                        } else {
+                            levels[i - 1].set_empty(' ', l, c);
+                        }
                     }
                 }
-                temp = "";
-            }
 
-            levels[i - 1].init(height, width);
+                if (!headfound) {
+                    over = true;
 
-            bool headfound = false;
-
-            for (auto l = 0; l < height; l++) {
-                std::getline(dat, line);
-
-                for (auto c = 0; c < line.size(); c++) {
-                    if (c == width) {
-                        break;
-                    } else if (line.at(c) == '#') {
-                        levels[i - 1].set('#', l, c);
-                    } else if (line.at(c) == '.') {
-                        levels[i - 1].set(' ', l, c);
-                    } else if (line.at(c) == '*') {
-                        levels[i - 1].set('*', l, c);
-                        levels[i - 1].pos[0] = l;
-                        levels[i - 1].pos[1] = c;
-                        levels[i - 1].body[0].x = l;
-                        levels[i - 1].body[0].y = c;
-                        headfound = true;
-                    } else {
-                        levels[i - 1].set_empty(' ', l, c);
-                    }
+                    std::cout << "Head not found in maze: " << i;
                 }
-            }
-
-            if (!headfound) {
-                over = true;
-
-                std::cout << "Head not found in maze: " << i;
             }
         }
+
+        buffer = levels;
+
+        for (int j = 0; j < levels.size(); ++j) {
+            levels[j].set_apple();
+        }
+
+        dat.close();
     }
-
-    buffer = levels;
-
-    for (int j = 0; j < levels.size(); ++j)
-    {
-        levels[j].set_apple();
-    }
-
-	dat.close();
 }
 
 
@@ -126,7 +125,7 @@ void SnakeGame::render_welcome_msg()
 void SnakeGame::process_events()
 {
     //std::cout << "===PROCESS EVENTS===\n";
-    if(!IA.solution(levels[current_level], cobra))
+    if(!IA.solution(levels[current_level], cobra) and !game_over())
     {
         cobra.lives--;
         cobra.apples_eaten = 0;
@@ -148,7 +147,7 @@ void SnakeGame::update()
 {
 
     //std::cout << "===UPDATE===\n";
-    if(levels[current_level].apple == levels[current_level].pos)
+    if(levels[current_level].apple == levels[current_level].pos and !over)
     {
         int x = levels[current_level].apple[0];
         int y = levels[current_level].apple[1];
@@ -161,16 +160,17 @@ void SnakeGame::update()
         int t_x = levels[current_level].last_pos[0];
         int t_y = levels[current_level].last_pos[1];
 
-        //levels[current_level].set("*", t_x, t_y);
+        levels[current_level].set('*', t_x, t_y);
 
-        levels[current_level].set_empty(' ', x, y);
+        levels[current_level].body.emplace_back(coord(t_x, t_y));
+
+        //levels[current_level].set_empty(' ', x, y);
 
         levels[current_level].set_apple();
-        //std::cout << "COMI!!\n";
         system("pause");
     }
 
-    if(cobra.eaten() == 5)
+    if(cobra.eaten() == 5 and !over)
     {
         std::cout << "\nEATEN 5 APPLES!\n\n";
         std::cout << "Press <ENTER> to continue!\n";
@@ -180,13 +180,13 @@ void SnakeGame::update()
         current_level++;
     }
 
-    if(cobra.lives == 0)
+    if(cobra.lives == 0 and !over)
     {
         std::cout << "\nThanks for playing!\n";
         over = true;
     }
 
-    if(current_level >= levels.size())
+    if(current_level >= levels.size() and !over)
     {
         std::cout << "\nCONGRATULATIONS YOU BEAT THE GAME!!!\n\n";
         std::cout << "Press <ENTER> to continue!\n";
