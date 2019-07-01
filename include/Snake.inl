@@ -1,6 +1,8 @@
 Snake::Snake()
 {
-    snake.assign(">");
+    snake.assign("*");
+
+    lives = 5;
 
     apples_eaten = 0;
 }
@@ -14,11 +16,11 @@ int Snake::eaten()
 
 void Snake::operator++()
 {
-    snake.append("-");
+    snake.append("*");
 }
 
 
 void Snake::clear()
 {
-    snake.assign(">");
+    snake.assign("*");
 }

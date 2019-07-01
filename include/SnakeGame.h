@@ -7,6 +7,9 @@
 #include <fstream>
 #include <locale.h>
 #include <sstream>
+#include <stdlib.h>
+#include <time.h>
+#include <thread>
 #include "Snake.h"
 #include "Player.h"
 #include "Level.h"
@@ -19,9 +22,12 @@ private:
 	std::string score;          //!< Score
 	std::string input;          //!< User input to continue the game
 	std::vector<Level> levels;  //!< Array of levels
+
+    std::vector<Level> buffer;  //!< Array of levels
+
 	int current_level;          //!< Current level on levels array
 	bool over = false;
-	//Player IA; TODO
+	Player IA;
 	Snake cobra;
 
 public:
@@ -64,6 +70,8 @@ public:
 
 	//!< Returns if game is over or not
 	bool game_over();
+
+	void set_apple();
 };
 
 #include "SnakeGame.inl"

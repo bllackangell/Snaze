@@ -5,8 +5,10 @@
 
 class Snake
 {
-private:
-	std::string snake = ">";
+public:
+	std::string snake = "*";
+
+	int lives;
 
 	int apples_eaten;
 

@@ -2,10 +2,6 @@
 
 int main( int argc, char **argv )
 {
-    char *locale;
-
-    locale = setlocale(LC_ALL, "");
-
 	SnakeGame state;
 
 	state.initialize_game(argc, argv);

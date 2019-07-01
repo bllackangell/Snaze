@@ -19,9 +19,14 @@ class Level
 public:
 
 	std::vector<std::vector<Block>> level; //!< Matrix of levels
+
+    std::vector<int> pos;
+
+    std::vector<int> apple;
+
+    std::vector<int> last_pos;
+
 	int h, w;
-	int snake_pos[2];
-	const char *apple;
 
 public:
 	//=== CONSTRUCTORS ===\\
@@ -46,16 +51,11 @@ public:
 
 	void init(int H, int W);
 
-	std::vector<std::vector<Block>> Maze();
-
 
 	void set( const char *c , int H, int W);
 
 
 	void set_empty( const char *c , int H, int W);
-
-
-    int *pos();
 
 
     char element(int H, int W);
