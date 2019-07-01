@@ -22,9 +22,7 @@ private:
 	std::string score;          //!< Score
 	std::string input;          //!< User input to continue the game
 	std::vector<Level> levels;  //!< Array of levels
-
     std::vector<Level> buffer;  //!< Array of levels
-
 	int current_level;          //!< Current level on levels array
 	bool over = false;
 	Player IA;
@@ -51,18 +49,21 @@ public:
 
 
 
-    //!< Render Welcome message
-	void render_welcome_msg();
-
-
 	//!< Initialize the game
 	void initialize_game(int argc, char **argv);
 
 
-	void update(); //TODO
+    //!< Render Welcome message
+    void render_welcome_msg();
 
 
-	void process_events(); //TODO
+
+	void update();
+
+
+
+	void process_events();
+
 
 
 	void render();
@@ -70,8 +71,6 @@ public:
 
 	//!< Returns if game is over or not
 	bool game_over();
-
-	void set_apple();
 };
 
 #include "SnakeGame.inl"

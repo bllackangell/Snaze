@@ -8,15 +8,19 @@
 class Player
 {
 public:
-    int life;
-
-public:
 	Player() = default;
 	~Player() = default;
 
-    bool move(Level &level, Snake &cobra); ///Random Solution
 
-//	Direction next_move(); //TODO DIRECTION COULD BE AN STACK
+
+	//=== METHODS ===\\
+
+
+    //!< Random Solution
+    bool move(Level &level, Snake &cobra);
+
+    //!< Tries to find a way to apple, if there's none do random movements
+	bool solution(Level &level, Snake &cobra);
 };
 
 #include "Player.inl"

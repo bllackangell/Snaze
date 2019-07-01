@@ -1,3 +1,7 @@
+//=== CONSTRUCTORS ===\\
+
+
+
 Snake::Snake()
 {
     snake.assign("*");
@@ -6,6 +10,11 @@ Snake::Snake()
 
     apples_eaten = 0;
 }
+
+
+
+//=== METHODS ===\\
+
 
 
 int Snake::eaten()

@@ -2,7 +2,7 @@
 
 
 
-SnakeGame::SnakeGame() //TODO REDO
+SnakeGame::SnakeGame()
 {
     current_level = 0;
 	height = 0;
@@ -15,21 +15,6 @@ SnakeGame::SnakeGame() //TODO REDO
 
 
 
-void SnakeGame::render_welcome_msg()
-{
-    if(!game_over())
-    {
-        std::cout << "\n\n\n\n\n---> Welcome to the classic Snake Game <---\n";
-        std::cout << "-------------------------------------------\n";
-        std::cout << "Levels loaded: " << levels.size() << " | Snake lives: "<< cobra.lives <<" | Apples to eat: 5\n";
-        std::cout << "Clear all levels to win the game. Good luck!!!\n";
-        std::cout << "-------------------------------------------\n";
-        std::cout << "Press <ENTER> to start the game!\n";
-        std::getline(std::cin, input);
-    }
-}
-
-
 void SnakeGame::initialize_game(int argc, char** argv)
 {
 	std::string line;
@@ -39,6 +24,7 @@ void SnakeGame::initialize_game(int argc, char** argv)
 	if (!dat.is_open())
 	{
 		std::cout << "Unable to open file.\n";
+		over = true;
 	}
 
     int i = 0;
@@ -62,6 +48,7 @@ void SnakeGame::initialize_game(int argc, char** argv)
                 if (std::stringstream(temp) >> found) {
 
                     levels.resize(i);
+                    buffer.resize(i);
 
                     if (cont == 0) {
                         height = found;
@@ -84,16 +71,18 @@ void SnakeGame::initialize_game(int argc, char** argv)
                     if (c == width) {
                         break;
                     } else if (line.at(c) == '#') {
-                        levels[i - 1].set(u8"#", l, c);
+                        levels[i - 1].set('#', l, c);
                     } else if (line.at(c) == '.') {
-                        levels[i - 1].set(u8".", l, c);
+                        levels[i - 1].set(' ', l, c);
                     } else if (line.at(c) == '*') {
-                        levels[i - 1].set(u8"*", l, c);
+                        levels[i - 1].set('*', l, c);
                         levels[i - 1].pos[0] = l;
                         levels[i - 1].pos[1] = c;
+                        levels[i - 1].body[0].x = l;
+                        levels[i - 1].body[0].y = c;
                         headfound = true;
                     } else {
-                        levels[i - 1].set_empty(u8"\u0020", l, c);
+                        levels[i - 1].set_empty(' ', l, c);
                     }
                 }
             }
@@ -103,44 +92,87 @@ void SnakeGame::initialize_game(int argc, char** argv)
 
                 std::cout << "Head not found in maze: " << i;
             }
-
-            set_apple();
-
         }
     }
 
     buffer = levels;
 
+    for (int j = 0; j < levels.size(); ++j)
+    {
+        levels[j].set_apple();
+    }
+
 	dat.close();
 }
+
+
+
+void SnakeGame::render_welcome_msg()
+{
+    if(!game_over())
+    {
+        std::cout << "\n\n\n\n\n\n\n\n\n\n---> Welcome to the classic Snake Game <---\n";
+        std::cout << "-------------------------------------------\n";
+        std::cout << "Levels loaded: " << levels.size() << " | Snake lives: "<< cobra.lives <<" | Apples to eat: 5\n";
+        std::cout << "Clear all levels to win the game. Good luck!!!\n";
+        std::cout << "-------------------------------------------\n";
+        std::cout << "Press <ENTER> to start the game!\n";
+        std::getline(std::cin, input);
+    }
+}
+
+
+
+void SnakeGame::process_events()
+{
+    //std::cout << "===PROCESS EVENTS===\n";
+    if(!IA.solution(levels[current_level], cobra))
+    {
+        cobra.lives--;
+        cobra.apples_eaten = 0;
+
+        std::cout << "\nYOU DIED!\n\n";
+        std::cout << "You have " << cobra.lives << " lives left\n";
+        std::cout << "Press <ENTER> to continue!\n";
+        std::getline(std::cin, input);
+
+        levels[current_level] = buffer[current_level];
+        levels[current_level].set_apple();
+    }
+
+}
+
 
 
 void SnakeGame::update()
 {
 
-    std::cout << "===UPDATE===\n";
-    if(!IA.move(levels[current_level], cobra))
-    {
-        std::cout << "YOU DIED!\n";
-        std::cout << "Press <ENTER> to continue!\n";
-        std::getline(std::cin, input);
-        levels[current_level] = buffer[current_level];
-    }
-}
-
-
-void SnakeGame::process_events()
-{
-    std::cout << "===PROCESS EVENTS===\n";
+    //std::cout << "===UPDATE===\n";
     if(levels[current_level].apple == levels[current_level].pos)
     {
-        levels[current_level] = buffer[current_level];
+        int x = levels[current_level].apple[0];
+        int y = levels[current_level].apple[1];
+
         cobra.apples_eaten++;
+
+        ++cobra;
+        levels[current_level].body.resize(cobra.snake.size() + 1); // To save pos before tail
+
+        int t_x = levels[current_level].last_pos[0];
+        int t_y = levels[current_level].last_pos[1];
+
+        //levels[current_level].set("*", t_x, t_y);
+
+        levels[current_level].set_empty(' ', x, y);
+
+        levels[current_level].set_apple();
+        //std::cout << "COMI!!\n";
+        system("pause");
     }
 
     if(cobra.eaten() == 5)
     {
-        std::cout << "EATEN 5 APPLES!\n";
+        std::cout << "\nEATEN 5 APPLES!\n\n";
         std::cout << "Press <ENTER> to continue!\n";
         std::getline(std::cin, input);
         cobra.apples_eaten = 0;
@@ -148,45 +180,41 @@ void SnakeGame::process_events()
         current_level++;
     }
 
-    else if(current_level > levels.size())
+    if(cobra.lives == 0)
+    {
+        std::cout << "\nThanks for playing!\n";
         over = true;
+    }
 
+    if(current_level >= levels.size())
+    {
+        std::cout << "\nCONGRATULATIONS YOU BEAT THE GAME!!!\n\n";
+        std::cout << "Press <ENTER> to continue!\n";
+        std::getline(std::cin, input);
+        over = true;
+    }
 }
+
 
 
 void SnakeGame::render()
 {
-    std::cout << "Level loaded: " << current_level + 1<< " | Snake lives: " << cobra.lives << " | Apples to eat: 5 | Apples eaten: " << cobra.apples_eaten << "\n";
+    //std::cout << "===RENDER===";
+    if(!over) {
 
-	std::cout << levels[current_level];
+        std::cout << "Level loaded: " << current_level + 1 << " | Snake lives: " << cobra.lives
+                  << " | Apples to eat: 5 | Apples eaten: " << cobra.apples_eaten << "\n";
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 10));
 
+        std::cout << levels[current_level];
 
-    //std::cout << "Press <ENTER> to continue!\n";
-   // std::getline(std::cin, input);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 10)); //10fps
+    }
 }
+
+
 
 bool SnakeGame::game_over()
 {
     return over;
-}
-
-
-void SnakeGame::set_apple()
-{
-    srand (time(nullptr));
-
-    int x, y;
-
-    do{
-
-        x = rand() % levels[current_level].height(), y = rand() % levels[current_level].width();
-
-    }while(levels[current_level].level[x][y].occupied);
-
-    levels[current_level].level[x][y].block = u8"A";
-    levels[current_level].apple[0] = x;
-    levels[current_level].apple[1] = y;
-
 }

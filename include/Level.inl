@@ -1,16 +1,26 @@
+//=== CONSTRUCTORS ===\\
+
+
+
 Block::Block()
 {
-    char c = ' ';
-	block = &c;
+	block = ' ';
 	occupied = false;
 }
 
 
-Block::Block(const char *other)
+Block::Block(char other)
 {
 	block = other;
 	occupied = true;
 }
+
+
+//= LEVEL CLASS =\\
+
+
+//=== CONSTRUCTORS ===\\
+
 
 
 Level::Level()
@@ -18,12 +28,18 @@ Level::Level()
     pos.resize(2);
     apple.resize(2);
     last_pos.resize(2);
+    body.resize(1);
     last_pos[0] = -1;
     last_pos[1] = -1;
 
     h = 0;
     w = 0;
 }
+
+
+
+//=== METHODS ===\\
+
 
 
 void Level::init(int H, int W)
@@ -40,14 +56,14 @@ void Level::init(int H, int W)
 }
 
 
-void Level::set( const char *c , int H, int W)
+void Level::set(char c , int H, int W)
 {
     level[H][W].block = c;
     level[H][W].occupied = true;
 }
 
 
-void Level::set_empty( const char *c , int H, int W)
+void Level::set_empty(char c , int H, int W)
 {
     level[H][W].block = c;
     level[H][W].occupied = false;
@@ -56,7 +72,7 @@ void Level::set_empty( const char *c , int H, int W)
 
 char Level::element(int H, int W)
 {
-    return *level[H][W].block;
+    return level[H][W].block;
 }
 
 
@@ -69,4 +85,25 @@ int Level::height()
 int Level::width()
 {
     return w;
+}
+
+
+void Level::set_apple()
+{
+    srand(time(nullptr));
+
+    int x, y;
+
+    do{
+
+        x = rand() % h;
+        y = rand() % w;
+        //x = 10, y = 7;
+
+    }while(level[x][y].occupied);
+
+    level[x][y].block = 'A';
+    apple[0] = x;
+    apple[1] = y;
+
 }
