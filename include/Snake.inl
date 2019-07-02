@@ -6,7 +6,7 @@ Snake::Snake()
 {
     snake.assign("*");
 
-    lives = 5;
+    lives = 10;
 
     apples_eaten = 0;
 }

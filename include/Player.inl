@@ -214,25 +214,21 @@ bool Player::solution(Level &level, Snake &cobra) {
 
         pos = rand() % 4;
     }
-/*
-    for (int i = 0; i < level.body.size() - 1; i++)
-    {
-        if (level.level[h][w].block != 'A')
-            level.set_empty(' ', level.body[i].x, level.body[i].y);
 
-        level.body[i] = level.body[i + 1];
+    for (int i = level.body.size() - 1; i > 0 ; i--)
+    {
+        level.body[i] = level.body[i - 1];
         level.set('*', level.body[i].x, level.body[i].y);
     }
-*/
-    if (level.level[h][w].block != 'A')
-        level.set_empty(' ', h, w);
+
+    level.set_empty(' ', level.body[level.body.size() - 1].x, level.body[level.body.size() - 1].y);
 
     level.set('*', new_h, new_w);
 
     level.last_pos = level.pos;
 
-    level.body[level.body.size() - 1].x = new_h;
-    level.body[level.body.size() - 1].y = new_w;
+    level.body[0].x = new_h;
+    level.body[0].y = new_w;
 
     level.pos[0] = new_h;   //TODO make block have coord
     level.pos[1] = new_w;

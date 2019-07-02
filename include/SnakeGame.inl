@@ -155,19 +155,19 @@ void SnakeGame::update()
         cobra.apples_eaten++;
 
         ++cobra;
-        levels[current_level].body.resize(cobra.snake.size() + 1); // To save pos before tail
+        levels[current_level].body.resize(cobra.apples_eaten + 2); // To save pos before tail
 
-        int t_x = levels[current_level].last_pos[0];
-        int t_y = levels[current_level].last_pos[1];
+        //int t_x = levels[current_level].last_pos[0];
+        //int t_y = levels[current_level].last_pos[1];
 
-        levels[current_level].set('*', t_x, t_y);
+        //levels[current_level].set('*', t_x, t_y);
 
-        levels[current_level].body.emplace_back(coord(t_x, t_y));
+        //levels[current_level].body.emplace_back(coord(t_x, t_y));
 
-        //levels[current_level].set_empty(' ', x, y);
+        levels[current_level].set_empty(' ', x, y);
 
         levels[current_level].set_apple();
-        system("pause");
+        //system("pause");
     }
 
     if(cobra.eaten() == 5 and !over)

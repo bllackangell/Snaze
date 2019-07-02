@@ -26,6 +26,15 @@ struct Block
 struct coord{
     int x, y;
 
+
+
+    coord()
+    {
+        x = 0;
+        y = 0;
+    }
+
+
     coord(int i, int j)
     {
         x = i;
@@ -47,6 +56,7 @@ public:
 
 public:
 	//=== CONSTRUCTORS ===\\
+
 
 
 

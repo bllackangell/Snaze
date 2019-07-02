@@ -26,11 +26,16 @@ Block::Block(char other)
 Level::Level()
 {
     pos.resize(2);
+    pos[0] = -1;
+    pos[1] = -1;
     apple.resize(2);
+    apple[0] = -1;
+    apple[1] = -1;
     last_pos.resize(2);
-    body.resize(1);
     last_pos[0] = -1;
     last_pos[1] = -1;
+    body.resize(1);
+
 
     h = 0;
     w = 0;
@@ -95,9 +100,10 @@ void Level::set_apple()
     int x, y;
 
     do{
-
-        x = rand() % h;
-        y = rand() % w;
+        do {
+            x = rand() % h;
+            y = rand() % w;
+        }while((x > apple[0] + 5 or x < apple[0] - 5 ) and (y > apple[1] + 5 or y < apple[1] - 5 ));
         //x = 10, y = 7;
 
     }while(level[x][y].occupied);
